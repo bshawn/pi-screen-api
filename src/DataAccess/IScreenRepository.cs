@@ -9,5 +9,8 @@ namespace ScreenApi.DataAccess
         IEnumerable<Screen> GetAllScreens();
         Screen GetScreenById(Guid id);
         IEnumerable<Screen> FindScreens(string searchTerm);
+        void AddScreen(Screen screen);
+        void UpdateScreen(Screen screen);
+        void DeleteScreen(Screen screen);
     }
 }
