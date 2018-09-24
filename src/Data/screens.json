@@ -1,0 +1,20 @@
+[
+    {
+        "id": "9f290db4-9b70-4566-a26a-d143e3a0f51d",
+        "name": "Welcome Center Screen",
+        "location": "Welcome Center",
+        "description": ""
+    },
+    {
+        "id": "954c0e59-49b0-41f3-8b98-cc8f3d376af8",
+        "name": "Narthex Screen 1",
+        "location": "Narthex",
+        "description": ""
+    },
+    {
+        "id": "76a26f66-c0b6-4c88-a5b2-100e3d947b10",
+        "name": "Narthex Screen 2",
+        "location": "Narthex",
+        "description": ""
+    }
+]
