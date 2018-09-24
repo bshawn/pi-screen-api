@@ -1,0 +1,76 @@
+{
+	"info": {
+		"_postman_id": "a40317fc-bcb8-4c89-9e72-fa296cfca830",
+		"name": "ScreenApi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get All Screens",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{protocol}}://{{host}}/api/screens",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"screens"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Screen By ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{protocol}}://{{host}}/api/screens/{{narthex-screen-id}}",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"screens",
+						"{{narthex-screen-id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find Screens",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{protocol}}://{{host}}/api/screens?searchTerm={{narthex-search-term}}",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"screens"
+					],
+					"query": [
+						{
+							"key": "searchTerm",
+							"value": "{{narthex-search-term}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
