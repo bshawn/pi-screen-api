@@ -16,7 +16,7 @@ At this time, the backing datastore for system data is a simple json file.  This
 ## Running the code
 
 ```bash
-git clone github.com/bshawn/pi-screen-api.git
+git clone https://github.com/bshawn/pi-screen-api.git
 cd pi-screen-api/src
 dotnet run
 ```
