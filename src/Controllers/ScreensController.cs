@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ScreenApi.DataAccess;
+using ScreenApi.DataAccess.Exceptions;
 using ScreenApi.Models;
 
 namespace ScreenApi.Controllers
@@ -34,8 +36,13 @@ namespace ScreenApi.Controllers
             }
             catch (Exception ex)
             {
-                return base.StatusCode(500, $"Unable to process request.  Details: {ex.ToString()}");
+                return InternalServerError($"Unable to process request.  Details: {ex.ToString()}");
             }
+        }
+
+        private ObjectResult InternalServerError(string message)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, message);
         }
 
         private ActionResult<IEnumerable<Screen>> FindScreens(string searchTerm)
@@ -46,7 +53,7 @@ namespace ScreenApi.Controllers
             }
             catch (Exception ex)
             {
-                return base.StatusCode(500, $"Unable to process request.  Details: {ex.ToString()}");
+                return InternalServerError($"Unable to process request.  Details: {ex.ToString()}");
             }
         }
 
@@ -64,26 +71,74 @@ namespace ScreenApi.Controllers
             }
             catch (Exception ex)
             {
-                return base.StatusCode(500, $"Unable to process request. Details: {ex.ToString()}");
+                return InternalServerError($"Unable to process request.  Details: {ex.ToString()}");
             }
         }
 
         // POST api/screens
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult Post([FromBody] Screen screen)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState.ValidationState);
+
+            try
+            {
+                db.AddScreen(screen);
+                return NoContent();
+            }
+            catch (AlreadyExistsException aex)
+            {
+                return Conflict(aex.Message);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError($"Unable to process request.  Details: { ex.ToString()}");
+            }
         }
 
         // PUT api/screens/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public ActionResult Put(Guid id, [FromBody] Screen screen)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState.ValidationState);
+
+            try
+            {
+                if (id != screen.Id)
+                    screen.Id = id;
+
+                db.UpdateScreen(screen);
+                return NoContent();
+            }
+            catch (NotFoundException aex)
+            {
+                return NotFound(aex.Message);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError($"Unable to process request.  Details: { ex.ToString()}");
+            }
         }
 
         // DELETE api/screens/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(Guid id)
         {
+            try
+            {
+                db.DeleteScreen(id);
+                return NoContent();
+            }
+            catch (NotFoundException aex)
+            {
+                return NotFound(aex.Message);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError($"Unable to process request.  Details: { ex.ToString()}");
+            }
         }
     }
 }

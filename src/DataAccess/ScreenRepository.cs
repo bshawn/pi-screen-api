@@ -67,6 +67,7 @@ namespace ScreenApi.DataAccess
                 throw new AlreadyExistsException("A screen with the specified ID already exists");
 
             screens.Add(screen);
+            WriteScreenFile(screens);
         }
 
         private void WriteScreenFile(IEnumerable<Screen> screens)
@@ -85,12 +86,25 @@ namespace ScreenApi.DataAccess
 
         public void UpdateScreen(Screen screen)
         {
-            throw new NotImplementedException();
+            var screens = GetAllScreens().ToList();
+            var old = GetScreenById(screens, screen.Id);
+            if (old == null)
+                throw new NotFoundException("The specified screen ID was not found");
+
+            screens.Remove(old);
+            screens.Add(screen);
+            WriteScreenFile(screens);
         }
 
-        public void DeleteScreen(Screen screen)
+        public void DeleteScreen(Guid id)
         {
-            throw new NotImplementedException();
+            var screens = GetAllScreens().ToList();
+            var screen = GetScreenById(screens, id);
+            if (screen == null)
+                throw new NotFoundException("The specified screen ID was not found");
+
+            screens.Remove(screen);
+            WriteScreenFile(screens);
         }
     }
 }
