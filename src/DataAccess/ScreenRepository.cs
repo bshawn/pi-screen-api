@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 using ScreenApi.DataAccess.Exceptions;
 using ScreenApi.Models;
 
@@ -11,6 +13,7 @@ namespace ScreenApi.DataAccess
     internal class ScreenRepository : IScreenRepository
     {
         private string dataFilePath;
+        private JsonSerializer serializer;
 
         public ScreenRepository(string dataFilePath)
         {
@@ -18,6 +21,11 @@ namespace ScreenApi.DataAccess
                 throw new ArgumentException("Parameter cannot be null or empty string", dataFilePath);
 
             this.dataFilePath = dataFilePath;
+
+            this.serializer = new JsonSerializer();
+            this.serializer.Converters.Add(new StringEnumConverter());
+            this.serializer.Formatting = Formatting.Indented;
+            this.serializer.ContractResolver = new CamelCasePropertyNamesContractResolver();
         }
 
         public IEnumerable<Screen> GetAllScreens()
@@ -31,8 +39,6 @@ namespace ScreenApi.DataAccess
             using (StreamReader sr = new StreamReader(fs))
             using (JsonReader reader = new JsonTextReader(sr))
             {
-                JsonSerializer serializer = new JsonSerializer();
-
                 // read the json from a stream
                 // json size doesn't matter because only a small piece is read at a time from the HTTP request
                 return serializer.Deserialize<IEnumerable<Screen>>(reader);
@@ -76,8 +82,6 @@ namespace ScreenApi.DataAccess
             using (StreamWriter sw = new StreamWriter(fs))
             using (JsonWriter writer = new JsonTextWriter(sw))
             {
-                JsonSerializer serializer = new JsonSerializer();
-
                 // read the json from a stream
                 // json size doesn't matter because only a small piece is read at a time from the HTTP request
                 serializer.Serialize(writer, screens);
