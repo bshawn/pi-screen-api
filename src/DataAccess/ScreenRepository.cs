@@ -39,8 +39,6 @@ namespace ScreenApi.DataAccess
             using (StreamReader sr = new StreamReader(fs))
             using (JsonReader reader = new JsonTextReader(sr))
             {
-                // read the json from a stream
-                // json size doesn't matter because only a small piece is read at a time from the HTTP request
                 return serializer.Deserialize<IEnumerable<Screen>>(reader);
             }
         }
@@ -83,9 +81,6 @@ namespace ScreenApi.DataAccess
             using (JsonWriter writer = new JsonTextWriter(sw))
             {
                 fs.SetLength(0); // clear the file
-
-                // read the json from a stream
-                // json size doesn't matter because only a small piece is read at a time from the HTTP request
                 serializer.Serialize(writer, screens);
             }
         }
