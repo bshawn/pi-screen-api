@@ -26,6 +26,92 @@
 			"response": []
 		},
 		{
+			"name": "Create Screen",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"{{new-screen-id}}\",\n    \"name\": \"Test Screen\",\n    \"location\": \"Test Location\",\n    \"description\": \"\"\n}"
+				},
+				"url": {
+					"raw": "{{protocol}}://{{host}}/api/screens",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"screens"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Screen",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"{{new-screen-id}}\",\n    \"name\": \"Test Screen Updated\",\n    \"location\": \"Test Location Updated\",\n    \"description\": \"\"\n}"
+				},
+				"url": {
+					"raw": "{{protocol}}://{{host}}/api/screens/{{new-screen-id}}",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"screens",
+						"{{new-screen-id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Screen",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{protocol}}://{{host}}/api/screens/{{new-screen-id}}",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"screens",
+						"{{new-screen-id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Get Screen By ID",
 			"request": {
 				"method": "GET",
