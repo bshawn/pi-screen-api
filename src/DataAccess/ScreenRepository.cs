@@ -35,7 +35,7 @@ namespace ScreenApi.DataAccess
 
         private IEnumerable<Screen> ReadScreenFile()
         {
-            using (Stream fs = new FileStream(dataFilePath, FileMode.OpenOrCreate, FileAccess.Read, FileShare.Read, 4096))
+            using (Stream fs = new FileStream(dataFilePath, FileMode.OpenOrCreate, FileAccess.Read, FileShare.None, 4096))
             using (StreamReader sr = new StreamReader(fs))
             using (JsonReader reader = new JsonTextReader(sr))
             {
@@ -78,10 +78,12 @@ namespace ScreenApi.DataAccess
 
         private void WriteScreenFile(IEnumerable<Screen> screens)
         {
-            using (Stream fs = new FileStream(dataFilePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write, 4096))
+            using (Stream fs = new FileStream(dataFilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None, 4096))
             using (StreamWriter sw = new StreamWriter(fs))
             using (JsonWriter writer = new JsonTextWriter(sw))
             {
+                fs.SetLength(0); // clear the file
+
                 // read the json from a stream
                 // json size doesn't matter because only a small piece is read at a time from the HTTP request
                 serializer.Serialize(writer, screens);
