@@ -133,6 +133,55 @@
 			"response": []
 		},
 		{
+			"name": "Get Screen Video",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{protocol}}://{{host}}/api/screens/{{narthex-screen-id}}/video",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"screens",
+						"{{narthex-screen-id}}",
+						"video"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Screen Video Stream",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Range",
+						"value": "bytes=0-1023"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "{{protocol}}://{{host}}/api/screens/{{narthex-screen-id}}/video",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"screens",
+						"{{narthex-screen-id}}",
+						"video"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Find Screens",
 			"request": {
 				"method": "GET",
