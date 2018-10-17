@@ -83,6 +83,42 @@
 			"response": []
 		},
 		{
+			"name": "Update Screen Video",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "video/mp4"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"value": ""
+						}
+					]
+				},
+				"url": {
+					"raw": "{{protocol}}://{{host}}/api/screens/{{new-screen-id}}/video",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"screens",
+						"{{new-screen-id}}",
+						"video"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Delete Screen",
 			"request": {
 				"method": "DELETE",
