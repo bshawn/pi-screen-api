@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using ScreenApi.Models;
 
 namespace ScreenApi.DataAccess
@@ -8,6 +9,6 @@ namespace ScreenApi.DataAccess
     internal interface IVideoRepository
     {
         FileStream GetVideo(Guid screenId);
-        void AddVideo(Guid screenId, Stream video);
+        Task UpdateVideo(Guid screenId, Stream video);
     }
 }

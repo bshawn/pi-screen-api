@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ScreenApi.DataAccess;
@@ -12,12 +13,15 @@ namespace ScreenApi.Controllers
 {
     [Route("api/screens/{screenId}/[controller]")]
     [ApiController]
+    [Consumes("multipart/form-data")]
     public class VideoController : ControllerBase
     {
         // TODO: Load VideoRepository using Dependency Injection
         // TODO: Centralize exception handling (handle known exceptions)
         private const string DATA_DIR = "./Data/Videos";
         private IVideoRepository db = new VideoRepository(DATA_DIR);
+        private const string SCREEN_DATA_FILE = "./Data/screens.json";
+        private IScreenRepository screenDb = new ScreenRepository(SCREEN_DATA_FILE);
 
         // GET api/screens/5/video
         [HttpGet]
@@ -42,29 +46,28 @@ namespace ScreenApi.Controllers
             return StatusCode(StatusCodes.Status500InternalServerError, message);
         }
 
-        // // PUT api/screens/5/video
-        // [HttpPut]
-        // public ActionResult Put(Guid screenId, [FromBody] Screen screen)
-        // {
-        //     if (!ModelState.IsValid)
-        //         return BadRequest(ModelState.ValidationState);
+        [HttpPut]
+        public async Task<IActionResult> Put(Guid screenId, IFormFile file)
+        {
+            try
+            {
+                var screen = screenDb.GetScreenById(screenId);
+                if (screen == null)
+                    throw new NotFoundException("The specified screen ID does not exist");
 
-        //     try
-        //     {
-        //         if (id != screen.Id)
-        //             screen.Id = id;
+                var stream = file.OpenReadStream();
+                await db.UpdateVideo(screenId, stream);
+            }
+            catch (NotFoundException nfex)
+            {
+                return NotFound(nfex.Message);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError($"Unable to process request.  Details: { ex.ToString() }");
+            }
 
-        //         db.UpdateScreen(screen);
-        //         return NoContent();
-        //     }
-        //     catch (NotFoundException aex)
-        //     {
-        //         return NotFound(aex.Message);
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         return InternalServerError($"Unable to process request.  Details: { ex.ToString()}");
-        //     }
-        // }
+            return NoContent();
+        }
     }
 }
